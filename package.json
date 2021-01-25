@@ -1,0 +1,28 @@
+{
+  "name": "cloudenv-hq",
+  "version": "0.1.0",
+  "description": "Keep your ENV vars synced between your team members",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudenvhq/cloudenv-node.git"
+  },
+  "keywords": [
+    "secrets",
+    "environmental",
+    "variables",
+    "environment"
+  ],
+  "author": "Lucas Carlson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cloudenvhq/cloudenv-node/issues"
+  },
+  "homepage": "https://github.com/cloudenvhq/cloudenv-node#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
