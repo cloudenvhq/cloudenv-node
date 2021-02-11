@@ -2,6 +2,7 @@ const os = require("os")
 const fs = require("fs")
 const path = require("path")
 const dotenv = require("dotenv")
+const YAML = require('yaml')
 const { execSync } = require("child_process")
 
 class Cloudenv {
@@ -22,14 +23,10 @@ class Cloudenv {
       }
 
       if (fs.existsSync(secretKeyFile)) {
-        const data = fs.readFileSync(secretKeyFile, 'utf8')
-        var [app, secretKey] = data.split(/\r?\n/)
-
-        app = app.split[1]
-        secretKey = secretKey.split[1]
+        let app = YAML.parse(fs.readFileSync(secretKeyFile, 'utf8'))
 
         if (process.env.NODE_ENV !== undefined) {
-          const stdout = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "${this.API_HOST}${this.READ_PATH}?name=${app}&environment=${process.env.NODE_ENV}&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${secretKey}" 2> /dev/null`)
+          const stdout = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "${this.API_HOST}${this.READ_PATH}?name=${app["slug"]}&environment=${process.env.NODE_ENV}&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${app["secret-key"]}" 2> /dev/null`)
           const buf = Buffer.from(stdout)
           const vars = dotenv.parse(buf)
           for (const k in vars) {
@@ -39,7 +36,7 @@ class Cloudenv {
           }
         }
 
-        const stdout2 = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "${this.API_HOST}${this.READ_PATH}?name=${app}&environment=default&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${secretKey}" 2> /dev/null`)
+        const stdout2 = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "${this.API_HOST}${this.READ_PATH}?name=${app["slug"]}&environment=default&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${app["secret-key"]}" 2> /dev/null`)
         const buf2 = Buffer.from(stdout2)
         const vars2 = dotenv.parse(buf2)
         for (const k2 in vars2) {

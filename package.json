@@ -1,6 +1,6 @@
 {
   "name": "cloudenv-hq",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Keep your ENV vars synced between your team members",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/cloudenvhq/cloudenv-node#readme",
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "yaml": "^1.10.0"
   }
 }
