@@ -13,8 +13,8 @@ class Cloudenv {
   }
 
   config() {
-    if (fs.existsSync(bearerFile.replace("~", os.homedir))) {
-      const bearer = fs.readFileSync(bearerFile.replace("~", os.homedir), 'utf8')
+    if (process.env.CLOUDENV_BEARER_TOKEN || fs.existsSync(bearerFile.replace("~", os.homedir))) {
+      const bearer = process.env.CLOUDENV_BEARER_TOKEN || fs.readFileSync(bearerFile.replace("~", os.homedir), 'utf8')
       let secretKeyFile = this.SECRET_KEY_FILENAME
 
       while (!fs.existsSync(secretKeyFile) && secretKeyFile !== "/" + this.SECRET_KEY_FILENAME) {
@@ -25,8 +25,11 @@ class Cloudenv {
         const data = fs.readFileSync(secretKeyFile, 'utf8')
         var [app, secretKey] = data.split(/\r?\n/)
 
+        app = app.split[1]
+        secretKey = secretKey.split[1]
+
         if (process.env.NODE_ENV !== undefined) {
-          const stdout = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "https://app.cloudenv.com/api/v1/envs?name=${app}&environment=${process.env.NODE_ENV}&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${secretKey}" 2> /dev/null`)
+          const stdout = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "${this.API_HOST}${this.READ_PATH}?name=${app}&environment=${process.env.NODE_ENV}&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${secretKey}" 2> /dev/null`)
           const buf = Buffer.from(stdout)
           const vars = dotenv.parse(buf)
           for (const k in vars) {
@@ -36,7 +39,7 @@ class Cloudenv {
           }
         }
 
-        const stdout2 = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "https://app.cloudenv.com/api/v1/envs?name=${app}&environment=default&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${secretKey}" 2> /dev/null`)
+        const stdout2 = execSync(`curl -s -H "Authorization: Bearer ${bearer.trim()}" "${this.API_HOST}${this.READ_PATH}?name=${app}&environment=default&version=${this.VERSION}&lang=node" | openssl enc -a -aes-256-cbc -md sha512 -d -pass pass:"${secretKey}" 2> /dev/null`)
         const buf2 = Buffer.from(stdout2)
         const vars2 = dotenv.parse(buf2)
         for (const k2 in vars2) {
