@@ -7,7 +7,7 @@ const { execSync } = require("child_process")
 
 class Cloudenv {
   constructor() {
-    this.VERSION = "0.2.6"
+    this.VERSION = "0.2.7"
     this.API_HOST = "https://app.cloudenv.com"
     this.READ_PATH = "/api/v1/envs"
     this.SECRET_KEY_FILENAME = ".cloudenv-secret-key"

@@ -1,6 +1,6 @@
 {
   "name": "cloudenv-hq",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Keep your ENV vars synced between your team members",
   "main": "index.js",
   "scripts": {
