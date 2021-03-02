@@ -2,6 +2,7 @@ const os = require("os")
 const fs = require("fs")
 const path = require("path")
 const dotenv = require("dotenv")
+const YAML = require('yaml')
 const { execSync } = require("child_process")
 
 class Cloudenv {
@@ -37,11 +38,9 @@ class Cloudenv {
       }
 
       if (fs.existsSync(secretKeyFile)) {
-        const data = fs.readFileSync(secretKeyFile, 'utf8')
-        var [app, secretKey] = data.split(/\r?\n/)
-
-        this.app = app.split[1]
-        this.secretKey = secretKey.split[1]
+        let app = YAML.parse(fs.readFileSync(secretKeyFile, 'utf8'))
+        this.app = app["slug"]
+        this.secretKey = app["secret-key"]
       }
     }
 

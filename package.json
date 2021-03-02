@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/cloudenvhq/cloudenv-node#readme",
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "yaml": "^1.10.0"
   }
 }
