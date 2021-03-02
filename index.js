@@ -7,7 +7,7 @@ const { execSync } = require("child_process")
 
 class Cloudenv {
   constructor() {
-    this.VERSION = "0.2.7"
+    this.VERSION = "0.2.8"
     this.API_HOST = "https://app.cloudenv.com"
     this.READ_PATH = "/api/v1/envs"
     this.SECRET_KEY_FILENAME = ".cloudenv-secret-key"
@@ -21,7 +21,7 @@ class Cloudenv {
     if (process.env.CLOUDENV_BEARER_TOKEN || env.CLOUDENV_BEARER_TOKEN) {
       this.bearer = process.env.CLOUDENV_BEARER_TOKEN || env.CLOUDENV_BEARER_TOKEN
     } else {
-      bearerFilename = process.env.CLOUDENV_BEARER_PATH || env.CLOUDENV_BEARER_PATH || this.CLOUDENV_RC
+      let bearerFilename = process.env.CLOUDENV_BEARER_PATH || env.CLOUDENV_BEARER_PATH || this.CLOUDENV_RC
       if(fs.existsSync(bearerFilename.replace("~", os.homedir))) {
         this.bearer = fs.readFileSync(bearerFilename.replace("~", os.homedir), 'utf8')
       }
